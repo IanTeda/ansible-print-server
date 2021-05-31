@@ -1,0 +1,6 @@
+---
+local_tz: 'Australia/Sydney'
+ansible_user: ansible
+default_user: ian
+prereq_packages: ['curl', 'wget', 'git', 'ufw', 'net-tools']
+print_packages: ['samba', 'cups', 'avahi-daemon', 'hpijs-ppds', 'printer-driver-hpijs']

@@ -1,0 +1,11 @@
+- name: Allow ansible user to execute without password
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^{{ ansible_user }}" # RegEx to check for state present
+    line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
+
+# Remove password from ansible account
+- name: Remove ansible account password login
+  command: "passwd -d {{ ansible_user }}"

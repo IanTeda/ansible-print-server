@@ -1,0 +1,36 @@
+- name: Add ansible_user to lpadmin
+  user:
+    name: "{{ ansible_user }}"
+    append: yes
+    group: lpadmin
+
+- name: Allow cups across network
+  shell: cupsctl --remote-any
+  notify: cups restart
+
+- name: Check if backup has already been made
+  stat: 
+    path: /etc/cups/cupsd.conf.org
+  register: cups_backup
+
+- name: Create backup copy of original cupsd.conf
+  when: cups_backup.stat.exists == false
+  ansible.builtin.copy: 
+    remote_src: yes 
+    src: /etc/cups/cupsd.conf 
+    dest: /etc/cups/cupsd.conf.org
+
+- name: Copy cupsd.conf to /etc/cups/cupsd.conf
+  ansible.builtin.copy:
+    src: cupsd.conf
+    dest: /etc/cups/cupsd.conf
+  notify: cups restart
+
+# Brother HL-2140
+
+# https://pimylifeup.com/raspberry-pi-print-server/
+# https://pimylifeup.com/raspberry-pi-airprint/
+# https://petosoft.wordpress.com/2020/06/06/setup-new-raspberry-pi-as-print-server-using-ansible/
+# https://medium.com/@alexanderbelov/how-to-use-your-brother-printer-with-cups-on-raspberry-pi-5b712cc2b4e6
+# https://www.lisenet.com/2014/setup-brother-hl-4150cdn-printer-with-cups-on-a-64-bit-debian-wheezy-machine/
+# https://support.brother.com/g/b/faqend.aspx?c=us_ot&lang=en&prod=lptd2120neus&faqid=faqp00100414_000

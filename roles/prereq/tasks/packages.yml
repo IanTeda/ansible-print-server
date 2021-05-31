@@ -1,0 +1,23 @@
+- name: Update apt sources
+  apt: 
+    name: aptitude 
+    update_cache: yes 
+    state: latest 
+    force_apt_get: yes
+
+- name: Upgrade the OS (apt-get dist-upgrade)
+  apt: 
+    upgrade: dist
+
+- name: Update installed packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Install required packages
+  apt: 
+    name: "{{ prereq_packages }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+    

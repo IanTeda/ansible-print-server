@@ -1,0 +1,9 @@
+# ansible-playbook 01-print-server.yml -i inventory/hosts.ini
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  roles:
+    - role: prereq
+    - role: print-server

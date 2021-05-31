@@ -1,0 +1,21 @@
+- name: Suspend default pi account
+  user:
+    name: pi
+    state: present
+    password: '!'  # '!' Suspends Linux accounts
+    
+- name: Set hostname in /etc/hostname
+  hostname:
+    name: "{{ hostname }}"
+    
+- name: Add hostname to /etc/hosts
+  lineinfile:
+    path: '/etc/hosts'
+    state: present
+    regexp: '^127\.0\.0\.1[ \t]+localhost'
+    line: '127.0.0.1 localhost {{ hostname }}'
+  notify: server reboot
+
+- name: Set timezone for server
+  community.general.timezone:
+    name: "{{ local_tz }}"

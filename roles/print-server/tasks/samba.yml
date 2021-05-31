@@ -1,0 +1,24 @@
+# https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Print_Server
+- name: Creates spool directory to be sure
+  ansible.builtin.file:
+    path: /var/spool/samba
+    state: directory
+    mode: 1777
+
+- name: Check if backup has already been made
+  stat: 
+    path: /etc/samba/smb.conf.org
+  register: smb_backup
+
+- name: Create backup copy of original smb.conf
+  when: smb_backup.stat.exists == false
+  ansible.builtin.copy: 
+    remote_src: yes 
+    src: /etc/samba/smb.conf 
+    dest: /etc/samba/smb.conf.org
+
+- name: Copy smb.conf to /etc/samba/smb.conf 
+  ansible.builtin.copy:
+    src: smb.conf
+    dest: /etc/samba/smb.conf 
+  notify: samba restart

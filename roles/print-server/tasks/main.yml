@@ -1,0 +1,20 @@
+- name: Update apt sources
+  apt: 
+    name: aptitude 
+    update_cache: yes 
+    state: latest 
+    force_apt_get: yes
+
+- name: Install required packages
+  apt: 
+    name: "{{ print_packages }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+  notify: server reboot
+
+- name: Configure cups
+  import_tasks: cups.yml
+
+- name: Configure samba
+  import_tasks: samba.yml

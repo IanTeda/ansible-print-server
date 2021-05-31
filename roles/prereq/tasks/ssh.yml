@@ -1,0 +1,27 @@
+- name: Don't permit root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+
+- name: Don't allow authentication login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+
+- name: Don't challenge response authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^ChallengeResponseAuthentication"
+    line: "ChallengeResponseAuthentication no"
+
+- name: Don't use PAM
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^UsePAM"
+    line: "UsePAM no"

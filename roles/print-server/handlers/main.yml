@@ -1,0 +1,13 @@
+- name: cups restart
+  service:
+    name: cups
+    state: restarted
+
+- name: samba restart
+  service:
+    name: smbd
+    state: restarted
+
+- name: server reboot
+  reboot:
+    msg: Reboot initiated by air print role
